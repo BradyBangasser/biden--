@@ -12,8 +12,8 @@ pub mod tokenizer {
 
     // wilford among potion 3am gone wrong prank gone cops called walmarrt all night challenge caps lock is on haha
 
-    pub fn tokenize(src: &str) {
-        let end_regex: Regex = Regex::new(keywords::LINE_TERMINATORS_REGEX).unwrap();
+    pub fn tokenize(src: &str) -> Vec<Token> {
+        let end_regex: Regex = Regex::new(keywords::TERMINATOR_REGEX).unwrap();
         let number_regex: Regex = Regex::new(r"[e\.]").unwrap();
         let user_number_regex: Regex = Regex::new(keywords::NUMBER_REGEX).unwrap();
         let valid_characters: Regex = Regex::new(keywords::ALLOWED_CHARACTERS).unwrap();
@@ -98,7 +98,7 @@ pub mod tokenizer {
 
             let mut operator_constructor: Vec<&str> = vec![];
 
-            while i < vec.len() && !valid_characters.is_match(vec[i]) {
+            while i < vec.len() && !valid_characters.is_match(vec[i]) && !end_regex.is_match(vec[i]) {
                 operator_constructor.push(vec[i]);
                 i += 1;
             }
@@ -112,6 +112,8 @@ pub mod tokenizer {
                 }
             }
         }
-        println!("{:#?}", tokens)
+        tokens.push(Token { token: Constants::END_T, val: "".into(), line });
+        
+        return tokens
     }
 }

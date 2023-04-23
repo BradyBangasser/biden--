@@ -1,13 +1,12 @@
 pub mod constants;
 mod tokenizer;
+mod lexer;
 
 pub mod compiler {
-    use crate::{compiler::{tokenizer::tokenizer::tokenize, constants::constants::Constants}, language::language::load_lang};
+    use crate::{compiler::{tokenizer::tokenizer::tokenize, lexer::lexer}, language::language::load_lang};
 
     pub fn compile(src: &str) {
         load_lang();
-        let hello = Constants::FALSE_T;
-        println!("Here, {}", hello);
-        tokenize(src)
+        lexer::parse(tokenize(src));
     }
 }

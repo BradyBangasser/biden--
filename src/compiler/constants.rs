@@ -4,6 +4,9 @@ pub mod constants {
         pub const FALSE_T: i32 = 0;
         pub const TRUE_T: i32 = 1;
 
+        pub const VAR_T: i32 = 10;
+        pub const ASSIGN_T: i32 = 11;
+
         pub const ADD_T: i32 = 20;
         pub const SUB_T: i32 = 21;
         pub const MULTI_T: i32 = 22;
