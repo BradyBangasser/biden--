@@ -6,7 +6,7 @@ pub mod tokenizer {
     #[derive(Debug)]
     pub struct Token {
         pub token: i32,
-        pub val: Box<str>,
+        pub val: Option<Box<str>>,
         pub line: i128,
     }
 
@@ -43,9 +43,9 @@ pub mod tokenizer {
                 let complete_number = number_constructor.join("");
 
                 if number_regex.is_match(&complete_number) {
-                    tokens.push(Token { token: Constants::DOUBLE_T, val: complete_number.into(), line })
+                    tokens.push(Token { token: Constants::DOUBLE_T, val: Some(complete_number.into()), line })
                 } else {
-                    tokens.push(Token { token: Constants::INT_T, val: complete_number.into(), line })
+                    tokens.push(Token { token: Constants::INT_T, val: Some(complete_number.into()), line })
                 }
 
                 continue;
@@ -68,7 +68,7 @@ pub mod tokenizer {
                     }
                 }
 
-                tokens.push(Token { token: Constants::STRING_T, val: string_builder.join("").into(), line });
+                tokens.push(Token { token: Constants::STRING_T, val: Some(string_builder.join("").into()), line });
 
                 i += 2;
                 continue;
@@ -92,7 +92,7 @@ pub mod tokenizer {
                     }
                 }
 
-                tokens.push(Token { token: token, val: word.into(), line });
+                tokens.push(Token { token: token, val: Some(word.into()), line });
                 continue;
             }
 
@@ -108,11 +108,11 @@ pub mod tokenizer {
 
             for operator in OPERATORS {
                 if operator.operators.contains(&built_operator) {
-                    tokens.push(Token { token: operator.token, val: built_operator.into(), line })
+                    tokens.push(Token { token: operator.token, val: Some(built_operator.into()), line })
                 }
             }
         }
-        tokens.push(Token { token: Constants::END_T, val: "".into(), line });
+        tokens.push(Token { token: Constants::END_T, val: None, line });
         
         return tokens
     }
