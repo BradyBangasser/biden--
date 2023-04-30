@@ -58,31 +58,42 @@ pub mod lexer {
                     todo!("syntax error")
                 }
 
-                let variable_name: String = String::from(&*(tokens[i].val.as_ref()).unwrap());
+                let variable_name: String = String::from(tokens[i].val.as_deref().unwrap());
                 i += 1;
 
                 if tokens[i].token != Constants::ASSIGN_T {
                     variables.push(Types::Unknown(Variable::new(variable_name, None)))
                 } else {
                     i += 1;
-                    println!("this");
+                    let variable_value: &Box<str>;
+
+                    if tokens[i].val.is_none() {
+                        todo!("error here")
+                    }
+
+                    variable_value = tokens[i].val.as_ref().unwrap();
 
                     // figure out how to automate this
                     if tokens[i].token == Constants::DOUBLE_T {
-                        variables.push(Types::Double(Variable::new(variable_name, Some(tokens[i].val.as_ref().unwrap().parse::<f64>().unwrap()))))
+                        variables.push(Types::Double(Variable::new(variable_name, Some(variable_value.parse::<f64>().unwrap()))))
                     } else if tokens[i].token == Constants::INT_T {
-                        variables.push(Types::Int(Variable::new(variable_name, Some(tokens[i].val.as_ref().unwrap().parse::<i128>().unwrap()))))
+                        variables.push(Types::Int(Variable::new(variable_name, Some(variable_value.parse::<i128>().unwrap()))))
                     } else if tokens[i].token == Constants::STRING_T {
-                        variables.push(Types::String(Variable::new(variable_name, Some(tokens[i].val.unwrap().parse::<String>().unwrap()))))
+                        variables.push(Types::String(Variable::new(variable_name, Some(variable_value.parse::<String>().unwrap()))))
                     } else if tokens[i].token == Constants::INPUT_T {
                         todo!("input");
                         // The comment below to just to avoid an unused code warning
-                        // variables.push(Types::String(Variable::new(variable_name, Some(tokens[i].val.parse::<String>().unwrap()))))
                     } else if tokens[i].token == Constants::PRINT_T {
                         i += 1;
-                        if tokens[i].token == Constants::WORD_T {
 
+                        let print_value: String;
+                        if tokens[i].token == Constants::WORD_T {
+                            todo!("print variable")
+                        } else {
+                            print_value = tokens[i].val.as_deref().unwrap().to_string()
                         }
+
+                        println!("{}", print_value)
                     } else {
                         todo!("syntax error")
                     }
